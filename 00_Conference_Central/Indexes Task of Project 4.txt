@@ -1,0 +1,64 @@
+Task 2 - Project 4 - Full Stak Web Developer NanoDegree program.
+
+Come up with 2 additional queries
+
+Think about other types of queries that would be useful for this application. Describe the purpose of 2 new queries and write the code that would perform them.
+
+-----------------------------------------------
+Query #1
+
+Scenario 1:
+User may want to look at all the speakers of the given conference. Based on the speakers, he may decide to register for the conference
+
+- Defined under getConferenceSpeakers endpoint in conference.py
+- You can run the endpoint in App Engine by providing conference Key
+- It uses single property built in index
+
+-----------------------------------------------
+
+Secenario 2:
+Users may want to look at all the other users attending the conference. Based on the audience, he may decide to register for the conference
+
+- defined under 'getConferenceRegisterdUsers' endpoint in conference.py
+- You can run the endpoint in App Engine by providing conference Key
+- It uses 'conferenceKeysToAttend' repeted=true property to search for all users
+
+
+-----------------------------------------------
+
+Solve the following query related problem
+
+Let’s say that you don't like workshops and you don't like sessions after 7 pm. How would you handle a query for all non-workshop sessions before 7 pm? What is the problem for implementing this query? What ways to solve it did you think of?
+
+Assumption:
+
+- Not considering sessions under a particular conference
+
+Solution:
+
+- Basically we are looking for a Filter on session list where typeOfSession!='Workshop' AND starttime < 19
+
+ sessions = Session.query(ndb.AND(
+            Session.typeOfSession != 'Workshop',
+            Session.startTime < 19)
+            ).fetch()
+
+Challange is The != (not-equal) operation is implemented by combining other filters using the OR operation. 
+
+property != value
+is implemented as
+(property < value) OR (property > value)
+
+So the solution to first condition is 
+
+sessions = Session.query(ndb.OR(
+            Session.typeOfSession > 'Workshop',
+            Session.typeOfSession < 'Workshop'
+            )).fetch()
+
+Other challange is to combine AND & OR.
+
+Since we need != operation AND & OR will not result in desired result.
+Thus, we plan to run the query first and then filter the results on the start time.
+
+The implementation is done in 'getFilteredSessions' endpoint in conference.py
