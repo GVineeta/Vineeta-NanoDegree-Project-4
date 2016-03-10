@@ -51,3 +51,17 @@ Copyright: March 2016 All rights reserved
 [4]: https://console.developers.google.com/
 [5]: https://localhost:8080/
 [6]: https://developers.google.com/appengine/docs/python/endpoints/endpoints_tool
+
+---------------------------------
+##Design Explanation for Session & Speaker:
+
+Sessions will be created under partucular conference thus reffering to conference as Parent.
+Each Conference can have multiple sessions by different speakers.
+Session Name is a mandatory field.
+Speakers is a free text entry for now, also case sensitive for now.
+As per design there can be only one speaker per session.
+Speaker if not provided explicitely, it would be 'Vineeta' by default.
+Duration is a integer number with no validations today.
+type of Session if not provided explicitly, would be 'Webninar' by default. 
+Date if not provided explicitly will put Conference start date by default.
+starttime is integer to mark 24 hrs data but does not have any validation implemented for now.

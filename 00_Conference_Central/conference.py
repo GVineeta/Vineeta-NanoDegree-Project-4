@@ -161,6 +161,7 @@ class ConferenceApi(remote.Service):
                     val = getattr(save_request, field)
                     if val:
                         setattr(prof, field, str(val))
+            prof.put()
         # return ProfileForm
         return self._copyProfileToForm(prof)
 
